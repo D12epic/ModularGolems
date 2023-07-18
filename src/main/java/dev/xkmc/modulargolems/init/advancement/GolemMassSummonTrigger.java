@@ -7,6 +7,8 @@ import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
+import javax.annotation.Nullable;
+
 public class GolemMassSummonTrigger extends BaseCriterion<GolemMassSummonTrigger.Ins, GolemMassSummonTrigger> {
 
 	public static Ins ins() {
