@@ -1,0 +1,13 @@
+{
+  "flag": "mod:twilightforest",
+  "name": "炽铁升级",
+  "icon": "modulargolems:fiery",
+  "category": "modulargolems:upgrades",
+  "pages": [
+	{
+	  "type": "patchouli:spotlight",
+	  "item": "modulargolems:fiery",
+	  "text": "对燃烧中的敌人造成更多伤害。最大等级：5"
+	}
+  ]
+}

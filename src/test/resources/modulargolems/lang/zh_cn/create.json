@@ -1,0 +1,17 @@
+{
+  "golem_material.create": {
+	"zinc": "锌",
+	"andesite_alloy": "安山合金",
+	"brass": "黄铜",
+	"railway": "火车"
+  },
+  "modifier.modulargolems": {
+	"coating": "镀层升级",
+	"coating.desc": "受到的伤害减少%s",
+	"push": "击退提升"
+  },
+  "item.modulargolems": {
+	"coating": "镀层升级",
+	"push": "机械手升级"
+  }
+}
