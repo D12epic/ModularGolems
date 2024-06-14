@@ -140,6 +140,7 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 		if (slot == EquipmentSlot.OFFHAND) {
 			leftArm.translateAndRotate(pose);
 			leftForeArm.translateAndRotate(pose);
+
 		}
 	}
 
