@@ -36,6 +36,8 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 	public final AnimationState axeAttackAnimationState = new AnimationState();
 	public final AnimationState spearAttackAnimationState = new AnimationState();
 	public final AnimationState unArmAttackAnimationState = new AnimationState();
+	public final AnimationState spearWarningAnimationState = new AnimationState();
+	public final AnimationState axeWarningAnimationState = new AnimationState();
 	public MetalGolemEntity(EntityType<MetalGolemEntity> type, Level level) {
 		super(type, level);
 		this.setMaxUpStep(1);
@@ -133,7 +135,11 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 		} else if (pId == 6) {
 			this.unArmAttackAnimationState.start(this.tickCount);
 			this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
-		} else{
+		} else if(pId ==7) {
+			this.spearWarningAnimationState.start(this.tickCount);
+		} else if(pId ==8) {
+			this.axeWarningAnimationState.start(this.tickCount);
+		}else{
 			super.handleEntityEvent(pId);
 		}
 	}

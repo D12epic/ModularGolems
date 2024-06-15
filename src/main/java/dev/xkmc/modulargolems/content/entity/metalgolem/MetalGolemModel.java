@@ -18,22 +18,20 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import dev.xkmc.modulargolems.content.client.pose.CustomModelAnimation;
 @OnlyIn(Dist.CLIENT)
 public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> implements IGolemModel<MetalGolemEntity, MetalGolemPartType, MetalGolemModel>, IHeadedModel {
-
 	private final ModelPart root;
 	private final ModelPart head;
 	private final ModelPart rightLeg;
 	private final ModelPart leftLeg;
 	private final ModelPart body;
 	private final ModelPart weapon;
-	public final ModelPart rightArm;
-	public final ModelPart leftArm;
-	public final ModelPart leftForeArm;
-	public final ModelPart rightForeArm;
+	private final ModelPart rightArm;
+	private final ModelPart leftArm;
+	private final ModelPart leftForeArm;
+	private final ModelPart rightForeArm;
 
 	public MetalGolemModel(EntityModelSet set) {
 		this(set.bakeLayer(GolemEquipmentModels.METALGOLEM));
 	}
-
 	public MetalGolemModel(ModelPart part) {
 		this.root = part;
 		this.body = part.getChild("body");
@@ -46,11 +44,7 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 		this.rightForeArm = rightArm.getChild("right_forearm");
 		this.weapon=rightForeArm.getChild("weapon");
 	}
-
-	public ModelPart root() {
-		return this.root;
-	}
-
+	public ModelPart root() {return this.root;}
 	public void copyFrom(MetalGolemModel other) {
 		head.copyFrom(other.head);
 		body.copyFrom(other.body);
@@ -71,16 +65,8 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 		this.animate(pEntity.unArmAttackAnimationState, CustomModelAnimation.attackUnarmed, pAgeInTicks);
 		if(its instanceof MetalGolemWeaponItem wi) {
 			switch (wi.getGolemWeaponType(wi)) {
-				case SWORD, AXE -> {
-                 if(pEntity.isAggressive()){
-					 this.rightArm.xRot=-2.0F;this.rightForeArm.xRot=-1.5F;
-				 }
-				}
-				case SPEAR -> {
-					if(pEntity.isAggressive()){
-						this.rightArm.xRot=1.5F;this.rightForeArm.xRot=-1.5F;
-					}
-				}
+				case SWORD, AXE -> this.animate(pEntity.axeWarningAnimationState, CustomModelAnimation.warningInAxe, pAgeInTicks);
+				case SPEAR -> this.animate(pEntity.spearWarningAnimationState, CustomModelAnimation.warningInSpear, pAgeInTicks);
 			}
 		}
 	}
@@ -124,13 +110,11 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 			this.rightLeg.render(stack, consumer, i, j, f1, f2, f3, f4);
 		}
 	}
-
 	public ResourceLocation getTextureLocationInternal(ResourceLocation rl) {
 		String id = rl.getNamespace();
 		String mat = rl.getPath();
 		return new ResourceLocation(id, "textures/entity/metal_golem/" + mat + ".png");
 	}
-
 	public void transformToHand(EquipmentSlot slot, PoseStack pose) {
 		if (slot == EquipmentSlot.MAINHAND) {
 			rightArm.translateAndRotate(pose);
@@ -140,19 +124,15 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 		if (slot == EquipmentSlot.OFFHAND) {
 			leftArm.translateAndRotate(pose);
 			leftForeArm.translateAndRotate(pose);
-
 		}
 	}
-
 	@Override
 	public ModelPart getHead() {
 		return head;
 	}
-
 	public void translateToHead(PoseStack pose) {
 		pose.translate(0.0F, -0.45F, -0.08F);
 		pose.mulPose(Axis.YP.rotationDegrees(180.0F));
 		pose.scale(0.625F, -0.625F, -0.625F);
 	}
-
 }

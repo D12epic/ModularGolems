@@ -34,7 +34,7 @@ public class GolemEquipmentModels {
 		root2.addOrReplaceChild("left_forearm", CubeListBuilder.create().texOffs(60, 72).addBox(8.99F, 0F, -6.0F, 4.0F, 16.0F, 6.0F), PartPose.offsetAndRotation(0.0F, 11.5F, 3.0F, 0.0F, 0.0F, 0.0F));
 		PartDefinition root3 = root1.getChild("right_forearm").addOrReplaceChild("weapon", CubeListBuilder.create().texOffs(80,0).addBox(-1.0F, -1.0F, -2.0F, 2.0F, 2.0F, 22.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 14.7273F, -5.8134F));
 		root3.getChild("weapon");
-		PartDefinition root4 = root2.addOrReplaceChild("shield", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, -1.0F, -1.0F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(2.5F, 11.5F, -4.0F));
+		PartDefinition root4 = root2.getChild("left_forearm").addOrReplaceChild("shield", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, -1.0F, -1.0F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(2.5F, 11.5F, -4.0F));
 		root4.getChild("shield");
 		return mesh;
 	}
