@@ -3,6 +3,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.xkmc.modulargolems.content.client.armor.GolemEquipmentModels;
+import dev.xkmc.modulargolems.content.client.pose.PoseStateMachine;
 import dev.xkmc.modulargolems.content.entity.common.IGolemModel;
 import dev.xkmc.modulargolems.content.entity.common.IHeadedModel;
 import dev.xkmc.modulargolems.content.item.equipments.MetalGolemWeaponItem;
@@ -64,9 +65,17 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 		this.animate(pEntity.spearAttackAnimationState, CustomModelAnimation.attackInSpear, pAgeInTicks);
 		this.animate(pEntity.unArmAttackAnimationState, CustomModelAnimation.attackUnarmed, pAgeInTicks);
 		if(its instanceof MetalGolemWeaponItem wi) {
+			if(pEntity.isAggressive()) {
 			switch (wi.getGolemWeaponType(wi)) {
-				case SWORD, AXE -> this.animate(pEntity.axeWarningAnimationState, CustomModelAnimation.warningInAxe, pAgeInTicks);
-				case SPEAR -> this.animate(pEntity.spearWarningAnimationState, CustomModelAnimation.warningInSpear, pAgeInTicks);
+					case SWORD, AXE -> {
+						this.rightArm.xRot = -1.5F;
+						this.rightForeArm.xRot = -1.5F;
+					}
+					case SPEAR -> {
+						this.rightArm.xRot = 1.5F;
+						this.rightForeArm.xRot = -1.5F;
+					}
+				}
 			}
 		}
 	}

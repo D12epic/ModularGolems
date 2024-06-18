@@ -135,11 +135,7 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 		} else if (pId == 6) {
 			this.unArmAttackAnimationState.start(this.tickCount);
 			this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
-		} else if(pId ==7) {
-			this.spearWarningAnimationState.start(this.tickCount);
-		} else if(pId ==8) {
-			this.axeWarningAnimationState.start(this.tickCount);
-		}else{
+		} else{
 			super.handleEntityEvent(pId);
 		}
 	}
@@ -159,7 +155,6 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 	super.tick();
 	ps.tick();
 	}
-
 	public boolean checkSpawnObstruction(LevelReader p_28853_) {
 		BlockPos blockpos = this.blockPosition();
 		BlockPos blockpos1 = blockpos.below();

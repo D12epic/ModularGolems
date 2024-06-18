@@ -15,21 +15,26 @@ public class PoseStateMachine {
     private AnimationState as = new AnimationState();
     public void tick() {
         int atkTick = mg.getAttackAnimationTick();
-        if (state == LayArmsDown) {
-            if (mg.isAggressive()) {
-                state = RaiseArms;
+        switch (state) {
+            case LayArmsDown -> {
+                if (mg.isAggressive()) {
+                    state = RaiseArms;
+                }
             }
-        } else if (state == RaiseArms) {
-            if (atkTick > 0) {
-                state = StartAttacking;
-                switchStates(mg).start(mg.tickCount);
-                mg.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
+            case RaiseArms -> {
+                if (atkTick > 0) {
+                    state = StartAttacking;
+                    switchStates(mg).start(mg.tickCount);
+                    mg.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
+                }else if(!mg.isAggressive()){
+                 state = LayArmsDown;
+                }
             }
-        } else if (state == StartAttacking) {
-            if (!(atkTick > 0)) {
-                state = LayArmsDown;
+            case StartAttacking -> {
+            if (!(atkTick > 0)) {state = LayArmsDown;}
             }
         }
+
     }
     public AnimationState switchStates(MetalGolemEntity pEntity) {
         if (pEntity.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof MetalGolemWeaponItem wi) {
