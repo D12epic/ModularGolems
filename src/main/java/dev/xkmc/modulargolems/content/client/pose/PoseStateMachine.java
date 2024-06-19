@@ -19,12 +19,13 @@ public class PoseStateMachine {
             case LayArmsDown -> {
                 if (mg.isAggressive()) {
                     state = RaiseArms;
+                    switchStates(mg,state).start(mg.tickCount);
                 }
             }
             case RaiseArms -> {
                 if (atkTick > 0) {
                     state = StartAttacking;
-                    switchStates(mg).start(mg.tickCount);
+                    switchStates(mg,state).start(mg.tickCount);
                     mg.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
                 }else if(!mg.isAggressive()){
                  state = LayArmsDown;
@@ -36,11 +37,18 @@ public class PoseStateMachine {
         }
 
     }
-    public AnimationState switchStates(MetalGolemEntity pEntity) {
+    public AnimationState switchStates(MetalGolemEntity pEntity,State s) {
         if (pEntity.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof MetalGolemWeaponItem wi) {
+            if(s == StartAttacking){
             switch (wi.getGolemWeaponType(wi)) {
                 case AXE, SWORD -> as = pEntity.axeAttackAnimationState;
                 case SPEAR -> as = pEntity.spearAttackAnimationState;
+            }
+            }else if(s == RaiseArms){
+                switch (wi.getGolemWeaponType(wi)) {
+                    case AXE, SWORD -> as = pEntity.axeWarningAnimationState;
+                    case SPEAR -> as = pEntity.spearWarningAnimationState;
+                }
             }
         }else{
             as =pEntity.unArmAttackAnimationState;

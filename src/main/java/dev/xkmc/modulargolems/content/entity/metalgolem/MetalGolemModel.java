@@ -59,25 +59,12 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 	}
 	public void setupAnim(MetalGolemEntity pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
-		Item its =pEntity.getMainHandItem().getItem();
 		this.animateWalk(pNetHeadYaw, pHeadPitch, pLimbSwing, pLimbSwingAmount);
+		this.animate(pEntity.axeWarningAnimationState, CustomModelAnimation.warningInAxe, pAgeInTicks);
+		this.animate(pEntity.spearWarningAnimationState, CustomModelAnimation.warningInSpear, pAgeInTicks);
 		this.animate(pEntity.axeAttackAnimationState, CustomModelAnimation.attackInAxe, pAgeInTicks);
 		this.animate(pEntity.spearAttackAnimationState, CustomModelAnimation.attackInSpear, pAgeInTicks);
 		this.animate(pEntity.unArmAttackAnimationState, CustomModelAnimation.attackUnarmed, pAgeInTicks);
-		if(its instanceof MetalGolemWeaponItem wi) {
-			if(pEntity.isAggressive()) {
-			switch (wi.getGolemWeaponType(wi)) {
-					case SWORD, AXE -> {
-						this.rightArm.xRot = -1.5F;
-						this.rightForeArm.xRot = -1.5F;
-					}
-					case SPEAR -> {
-						this.rightArm.xRot = 1.5F;
-						this.rightForeArm.xRot = -1.5F;
-					}
-				}
-			}
-		}
 	}
 	private void animateWalk(float pNetHeadYaw, float pHeadPitch,float pLimbSwing,float pLimbSwingAmount) {
 		this.head.yRot = pNetHeadYaw * ((float) Math.PI / 180F);

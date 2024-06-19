@@ -83,16 +83,22 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 		this.attackAnimationTick = 10;
 		int atkTick = this.getAttackAnimationTick();
 		Item its =this.getMainHandItem().getItem();
+		if(!this.getMainHandItem().isEmpty()){
 		if(its instanceof MetalGolemWeaponItem wi){
 			switch (wi.getGolemWeaponType(wi)) {
 				case SWORD, AXE -> {
-					if (atkTick > 0) {
-						this.level().broadcastEntityEvent(this, (byte) 4);
+					if (this.isAggressive()){
+						this.level().broadcastEntityEvent(this, (byte) 5);
+					}else if (atkTick > 0) {
+						this.level().broadcastEntityEvent(this, (byte) 6);
 					}
 				}
 				case SPEAR -> {
-					if (atkTick > 0) {
-						this.level().broadcastEntityEvent(this, (byte) 5);
+					if (this.isAggressive()){
+						this.level().broadcastEntityEvent(this, (byte) 7);
+					}else if (atkTick > 0) {
+						this.level().broadcastEntityEvent(this, (byte) 8);
+					}
 					}
 				}
 			}
