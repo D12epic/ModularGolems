@@ -21,7 +21,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -81,31 +80,7 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 	}
 	public boolean doHurtTarget(Entity target) {
 		this.attackAnimationTick = 10;
-		int atkTick = this.getAttackAnimationTick();
-		Item its =this.getMainHandItem().getItem();
-		if(!this.getMainHandItem().isEmpty()){
-		if(its instanceof MetalGolemWeaponItem wi){
-			switch (wi.getGolemWeaponType(wi)) {
-				case SWORD, AXE -> {
-					if (this.isAggressive()){
-						this.level().broadcastEntityEvent(this, (byte) 5);
-					}else if (atkTick > 0) {
-						this.level().broadcastEntityEvent(this, (byte) 6);
-					}
-				}
-				case SPEAR -> {
-					if (this.isAggressive()){
-						this.level().broadcastEntityEvent(this, (byte) 7);
-					}else if (atkTick > 0) {
-						this.level().broadcastEntityEvent(this, (byte) 8);
-					}
-					}
-				}
-			}
-		}
-		if(atkTick >0 ){
-			this.level().broadcastEntityEvent(this, (byte) 6);
-		}
+		this.level().broadcastEntityEvent(this, (byte) 4);
 		float damage = this.getAttackDamage();
 		double kb;
 		if (target instanceof LivingEntity livingentity) {
@@ -132,19 +107,23 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 		return IronGolem.Crackiness.byFraction(this.getHealth() / this.getMaxHealth());
 	}
 	public void handleEntityEvent(byte pId) {
-		if (pId == 4) {
-			this.axeAttackAnimationState.start(this.tickCount);
-			this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
-		}else if (pId == 5){
-			this.spearAttackAnimationState.start(this.tickCount);
-			this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
-		} else if (pId == 6) {
+		ItemStack is = this.getMainHandItem();
+		if(pId == 4){
+		if(!is.isEmpty()&&is.getItem() instanceof MetalGolemWeaponItem mi) {
+			switch (mi.getGolemWeaponType()) {
+				case SPEAR -> {
+					this.spearAttackAnimationState.start(this.tickCount);
+					this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
+				}
+				case SWORD,AXE ->{
+				this.axeAttackAnimationState.start(this.tickCount);
+				this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);}
+			}
+			} else if(is.isEmpty()){
 			this.unArmAttackAnimationState.start(this.tickCount);
-			this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
-		} else{
-			super.handleEntityEvent(pId);
+			this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);}
+			}else{super.handleEntityEvent(pId);}
 		}
-	}
 	protected SoundEvent getHurtSound(DamageSource p_28872_) {
 		return SoundEvents.IRON_GOLEM_HURT;
 	}

@@ -32,7 +32,8 @@ public class PoseStateMachine {
                 }
             }
             case StartAttacking -> {
-            if (!(atkTick > 0)) {state = LayArmsDown;}
+            if (!(atkTick > 0)) {
+                state = LayArmsDown;}
             }
         }
 
@@ -40,12 +41,12 @@ public class PoseStateMachine {
     public AnimationState switchStates(MetalGolemEntity pEntity,State s) {
         if (pEntity.getItemBySlot(EquipmentSlot.MAINHAND).getItem() instanceof MetalGolemWeaponItem wi) {
             if(s == StartAttacking){
-            switch (wi.getGolemWeaponType(wi)) {
+            switch (wi.getGolemWeaponType()) {
                 case AXE, SWORD -> as = pEntity.axeAttackAnimationState;
                 case SPEAR -> as = pEntity.spearAttackAnimationState;
             }
             }else if(s == RaiseArms){
-                switch (wi.getGolemWeaponType(wi)) {
+                switch (wi.getGolemWeaponType()) {
                     case AXE, SWORD -> as = pEntity.axeWarningAnimationState;
                     case SPEAR -> as = pEntity.spearWarningAnimationState;
                 }

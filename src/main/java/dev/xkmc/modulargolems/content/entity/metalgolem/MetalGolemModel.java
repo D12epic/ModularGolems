@@ -80,15 +80,23 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 		this.resetArmPoses();
 	}
 	private void resetArmPoses() {
-		this.leftArm.yRot = 0.0F;
+		this.leftArm.xRot = 0.0F;
 		this.leftArm.z = 0.0F;
 		this.leftArm.x = 0.0F;
 		this.leftArm.y = -7.0F;
-		this.rightArm.yRot = 0.0F;
+		this.leftForeArm.xRot = 0.0F;
+		this.leftForeArm.z = 3.0F;
+		this.leftForeArm.x = -0.001F;
+		this.leftForeArm.y = 11.5F;
+		this.rightArm.xRot = 0.0F;
 		this.rightArm.z = 0.0F;
 		this.rightArm.x = -0.0F;
 		this.rightArm.y = -7.0F;
-		this.weapon.yRot=0.0f;
+		this.rightForeArm.xRot = 0.0F;
+		this.rightForeArm.z = 3.0F;
+		this.rightForeArm.x = -0.001F;
+		this.rightForeArm.y = 11.5F;
+		this.weapon.xRot=0.0f;
 		this.weapon.z=0.0f;
 		this.weapon.x=0.0f;
 		this.weapon.y =2.0F;
