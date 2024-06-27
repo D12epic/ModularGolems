@@ -32,9 +32,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 @SerialClass
 public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGolemPartType> {
-	public final AnimationState axeAttackAnimationState = new AnimationState();
-	public final AnimationState spearAttackAnimationState = new AnimationState();
-	public final AnimationState unArmAttackAnimationState = new AnimationState();
+	public final AnimationState attackAnimationState = new AnimationState();
 	public final AnimationState spearWarningAnimationState = new AnimationState();
 	public final AnimationState axeWarningAnimationState = new AnimationState();
 	public MetalGolemEntity(EntityType<MetalGolemEntity> type, Level level) {
@@ -107,23 +105,14 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 		return IronGolem.Crackiness.byFraction(this.getHealth() / this.getMaxHealth());
 	}
 	public void handleEntityEvent(byte pId) {
-		ItemStack is = this.getMainHandItem();
 		if(pId == 4){
-		if(!is.isEmpty()&&is.getItem() instanceof MetalGolemWeaponItem mi) {
-			switch (mi.getGolemWeaponType()) {
-				case SPEAR -> {
-					this.spearAttackAnimationState.start(this.tickCount);
-					this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
-				}
-				case SWORD,AXE ->{
-				this.axeAttackAnimationState.start(this.tickCount);
-				this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);}
-			}
-			} else if(is.isEmpty()){
-			this.unArmAttackAnimationState.start(this.tickCount);
-			this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);}
+			ItemStack is =this.getMainHandItem();
+			if (!is.isEmpty() && is.getItem() instanceof MetalGolemWeaponItem) {
+				this.attackAnimationState.start(this.tickCount);
+				this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
 			}else{super.handleEntityEvent(pId);}
 		}
+	}
 	protected SoundEvent getHurtSound(DamageSource p_28872_) {
 		return SoundEvents.IRON_GOLEM_HURT;
 	}

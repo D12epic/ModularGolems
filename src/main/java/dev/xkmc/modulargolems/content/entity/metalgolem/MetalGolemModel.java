@@ -62,9 +62,9 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 		this.animateWalk(pNetHeadYaw, pHeadPitch, pLimbSwing, pLimbSwingAmount);
 		this.animate(pEntity.axeWarningAnimationState, CustomModelAnimation.warningInAxe, pAgeInTicks);
 		this.animate(pEntity.spearWarningAnimationState, CustomModelAnimation.warningInSpear, pAgeInTicks);
-		this.animate(pEntity.axeAttackAnimationState, CustomModelAnimation.attackInAxe, pAgeInTicks);
-		this.animate(pEntity.spearAttackAnimationState, CustomModelAnimation.attackInSpear, pAgeInTicks);
-		this.animate(pEntity.unArmAttackAnimationState, CustomModelAnimation.attackUnarmed, pAgeInTicks);
+		this.animate(pEntity.attackAnimationState, CustomModelAnimation.attackInAxe, pAgeInTicks);
+		this.animate(pEntity.attackAnimationState, CustomModelAnimation.attackInSpear, pAgeInTicks);
+		this.animate(pEntity.attackAnimationState, CustomModelAnimation.attackUnarmed, pAgeInTicks);
 	}
 	private void animateWalk(float pNetHeadYaw, float pHeadPitch,float pLimbSwing,float pLimbSwingAmount) {
 		this.head.yRot = pNetHeadYaw * ((float) Math.PI / 180F);
