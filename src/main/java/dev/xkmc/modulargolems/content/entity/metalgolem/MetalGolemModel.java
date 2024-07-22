@@ -3,7 +3,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import dev.xkmc.modulargolems.content.client.armor.GolemEquipmentModels;
-import dev.xkmc.modulargolems.content.client.pose.PoseStateMachine;
 import dev.xkmc.modulargolems.content.entity.common.IGolemModel;
 import dev.xkmc.modulargolems.content.entity.common.IHeadedModel;
 import dev.xkmc.modulargolems.content.item.equipments.MetalGolemWeaponItem;
@@ -13,7 +12,6 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import dev.xkmc.modulargolems.content.client.pose.CustomModelAnimation;
@@ -29,7 +27,6 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 	private final ModelPart leftArm;
 	private final ModelPart leftForeArm;
 	private final ModelPart rightForeArm;
-
 	public MetalGolemModel(EntityModelSet set) {
 		this(set.bakeLayer(GolemEquipmentModels.METALGOLEM));
 	}
@@ -60,11 +57,19 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 	public void setupAnim(MetalGolemEntity pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.animateWalk(pNetHeadYaw, pHeadPitch, pLimbSwing, pLimbSwingAmount);
-		this.animate(pEntity.axeWarningAnimationState, CustomModelAnimation.warningInAxe, pAgeInTicks);
-		this.animate(pEntity.spearWarningAnimationState, CustomModelAnimation.warningInSpear, pAgeInTicks);
-		this.animate(pEntity.attackAnimationState, CustomModelAnimation.attackInAxe, pAgeInTicks);
-		this.animate(pEntity.attackAnimationState, CustomModelAnimation.attackInSpear, pAgeInTicks);
-		this.animate(pEntity.attackAnimationState, CustomModelAnimation.attackUnarmed, pAgeInTicks);
+		if(pEntity.getMainHandItem().getItem() instanceof MetalGolemWeaponItem mwi) {
+			switch (mwi.getGolemWeaponType()) {
+				case AXE, SWORD ->
+				{this.animate(pEntity.warningAnimationState, CustomModelAnimation.warningInAxe, pAgeInTicks);
+				this.animate(pEntity.attackAnimationState, CustomModelAnimation.attackInAxe, pAgeInTicks);}
+				case SPEAR -> {
+				this.animate(pEntity.attackAnimationState, CustomModelAnimation.attackInSpear, pAgeInTicks);
+				this.animate(pEntity.warningAnimationState, CustomModelAnimation.warningInSpear, pAgeInTicks);
+				}
+			}
+		}else {
+			this.animate(pEntity.attackAnimationState, CustomModelAnimation.attackUnarmed, pAgeInTicks);
+		}
 	}
 	private void animateWalk(float pNetHeadYaw, float pHeadPitch,float pLimbSwing,float pLimbSwingAmount) {
 		this.head.yRot = pNetHeadYaw * ((float) Math.PI / 180F);
@@ -80,23 +85,23 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 		this.resetArmPoses();
 	}
 	private void resetArmPoses() {
-		this.leftArm.xRot = 0.0F;
+		this.leftArm.yRot = 0.0F;
 		this.leftArm.z = 0.0F;
 		this.leftArm.x = 0.0F;
 		this.leftArm.y = -7.0F;
-		this.leftForeArm.xRot = 0.0F;
+		this.leftForeArm.yRot = 0.0F;
 		this.leftForeArm.z = 3.0F;
 		this.leftForeArm.x = -0.001F;
 		this.leftForeArm.y = 11.5F;
-		this.rightArm.xRot = 0.0F;
+		this.rightArm.yRot = 0.0F;
 		this.rightArm.z = 0.0F;
 		this.rightArm.x = -0.0F;
 		this.rightArm.y = -7.0F;
-		this.rightForeArm.xRot = 0.0F;
+		this.rightForeArm.yRot = 0.0F;
 		this.rightForeArm.z = 3.0F;
 		this.rightForeArm.x = -0.001F;
 		this.rightForeArm.y = 11.5F;
-		this.weapon.xRot=0.0f;
+		this.weapon.yRot=0.0f;
 		this.weapon.z=0.0f;
 		this.weapon.x=0.0f;
 		this.weapon.y =2.0F;

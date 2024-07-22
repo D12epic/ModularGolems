@@ -4,7 +4,6 @@ import dev.xkmc.modulargolems.content.client.pose.PoseStateMachine;
 import dev.xkmc.modulargolems.content.config.GolemMaterialConfig;
 import dev.xkmc.modulargolems.content.entity.common.SweepGolemEntity;
 import dev.xkmc.modulargolems.content.entity.goals.GolemMeleeGoal;
-import dev.xkmc.modulargolems.content.item.equipments.MetalGolemWeaponItem;
 import dev.xkmc.modulargolems.content.item.wand.GolemInteractItem;
 import dev.xkmc.modulargolems.init.advancement.GolemTriggers;
 import net.minecraft.core.BlockPos;
@@ -33,8 +32,8 @@ import net.minecraft.world.phys.Vec3;
 @SerialClass
 public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGolemPartType> {
 	public final AnimationState attackAnimationState = new AnimationState();
-	public final AnimationState spearWarningAnimationState = new AnimationState();
-	public final AnimationState axeWarningAnimationState = new AnimationState();
+	public final AnimationState warningAnimationState = new AnimationState();
+	private final PoseStateMachine psm = new PoseStateMachine(this);
 	public MetalGolemEntity(EntityType<MetalGolemEntity> type, Level level) {
 		super(type, level);
 		this.setMaxUpStep(1);
@@ -105,12 +104,10 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 		return IronGolem.Crackiness.byFraction(this.getHealth() / this.getMaxHealth());
 	}
 	public void handleEntityEvent(byte pId) {
-		if(pId == 4){
-			ItemStack is =this.getMainHandItem();
-			if (!is.isEmpty() && is.getItem() instanceof MetalGolemWeaponItem) {
-				this.attackAnimationState.start(this.tickCount);
-				this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
-			}else{super.handleEntityEvent(pId);}
+		if(pId == 4) {
+			this.attackAnimationTick = 10;
+			psm.signalAttacking();
+			super.handleEntityEvent(pId);
 		}
 	}
 	protected SoundEvent getHurtSound(DamageSource p_28872_) {
@@ -124,10 +121,9 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 	protected void playStepSound(BlockPos p_28864_, BlockState p_28865_) {
 		this.playSound(SoundEvents.IRON_GOLEM_STEP, 1.0F, 1.0F);
 	}
-	PoseStateMachine ps = new PoseStateMachine(this);
 	public void tick() {
 	super.tick();
-	ps.tick();
+	psm.tick();
 	}
 	public boolean checkSpawnObstruction(LevelReader p_28853_) {
 		BlockPos blockpos = this.blockPosition();
