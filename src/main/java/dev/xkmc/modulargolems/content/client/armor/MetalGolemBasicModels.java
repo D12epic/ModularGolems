@@ -10,7 +10,7 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GolemEquipmentModels {
+public class MetalGolemBasicModels {
 
 	public static final List<ModelLayerLocation> LIST = new ArrayList<>();
 
@@ -114,12 +114,12 @@ public class GolemEquipmentModels {
 
 	public static void registerArmorLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
 		LIST.add(HELMET_LAYER);
-		event.registerLayerDefinition(HELMET_LAYER, GolemEquipmentModels::createHelmetLayer);
+		event.registerLayerDefinition(HELMET_LAYER, MetalGolemBasicModels::createHelmetLayer);
 		LIST.add(CHESTPLATE_LAYER);
-		event.registerLayerDefinition(CHESTPLATE_LAYER, GolemEquipmentModels::createChestplateLayer);
+		event.registerLayerDefinition(CHESTPLATE_LAYER, MetalGolemBasicModels::createChestplateLayer);
 		LIST.add(SHINGUARD_LAYER);
-		event.registerLayerDefinition(SHINGUARD_LAYER, GolemEquipmentModels::createShinGuard);
-		event.registerLayerDefinition(METALGOLEM, GolemEquipmentModels::createGolemLayer);
+		event.registerLayerDefinition(SHINGUARD_LAYER, MetalGolemBasicModels::createShinGuard);
+		event.registerLayerDefinition(METALGOLEM, MetalGolemBasicModels::createGolemLayer);
 	}
 
 }

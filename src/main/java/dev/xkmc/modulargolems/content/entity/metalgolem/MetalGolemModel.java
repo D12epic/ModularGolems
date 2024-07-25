@@ -2,7 +2,7 @@ package dev.xkmc.modulargolems.content.entity.metalgolem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import dev.xkmc.modulargolems.content.client.armor.GolemEquipmentModels;
+import dev.xkmc.modulargolems.content.client.armor.MetalGolemBasicModels;
 import dev.xkmc.modulargolems.content.entity.common.IGolemModel;
 import dev.xkmc.modulargolems.content.entity.common.IHeadedModel;
 import dev.xkmc.modulargolems.content.item.equipments.MetalGolemWeaponItem;
@@ -27,8 +27,9 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 	private final ModelPart leftArm;
 	private final ModelPart leftForeArm;
 	private final ModelPart rightForeArm;
+	private final ModelPart shield;
 	public MetalGolemModel(EntityModelSet set) {
-		this(set.bakeLayer(GolemEquipmentModels.METALGOLEM));
+		this(set.bakeLayer(MetalGolemBasicModels.METALGOLEM));
 	}
 	public MetalGolemModel(ModelPart part) {
 		this.root = part;
@@ -41,6 +42,7 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 		this.leftForeArm = leftArm.getChild("left_forearm");
 		this.rightForeArm = rightArm.getChild("right_forearm");
 		this.weapon=rightForeArm.getChild("weapon");
+		this.shield=leftForeArm.getChild("shield");
 	}
 	public ModelPart root() {return this.root;}
 	public void copyFrom(MetalGolemModel other) {
@@ -53,6 +55,7 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 		leftForeArm.copyFrom(other.leftForeArm);
 		rightForeArm.copyFrom(other.rightForeArm);
 		weapon.copyFrom(other.weapon);
+		shield.copyFrom(other.shield);
 	}
 	public void setupAnim(MetalGolemEntity pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
@@ -133,6 +136,7 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 		if (slot == EquipmentSlot.OFFHAND) {
 			leftArm.translateAndRotate(pose);
 			leftForeArm.translateAndRotate(pose);
+            shield.translateAndRotate(pose);
 		}
 	}
 	@Override

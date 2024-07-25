@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.List;
 
-import static dev.xkmc.modulargolems.content.client.armor.GolemEquipmentModels.LIST;
+import static dev.xkmc.modulargolems.content.client.armor.MetalGolemBasicModels.LIST;
 
 public class GolemEquipmentRenderer extends RenderLayer<MetalGolemEntity, MetalGolemModel> {
 
