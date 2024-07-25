@@ -1,0 +1,12 @@
+{
+  "name": "下界合金升级",
+  "icon": "modulargolems:netherite",
+  "category": "modulargolems:upgrades",
+  "pages": [
+	{
+	  "type": "patchouli:spotlight",
+	  "item": "modulargolems:netherite",
+	  "text": "为傀儡提供大量护甲值与攻击力。最大等级：2"
+	}
+  ]
+}
