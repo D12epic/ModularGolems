@@ -175,5 +175,14 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 			}
 		}
 	}
-
+	public int damageShieldImpl(LivingEntity player, ItemStack stack, double v) {
+       return 0;
+	}
+	@Override
+	public boolean isBlocking() {
+    if((this.getOffhandItem().getItem()) instanceof MetalGolemShieldItem){
+		return true;
+	}
+        return false;
+	}
 }

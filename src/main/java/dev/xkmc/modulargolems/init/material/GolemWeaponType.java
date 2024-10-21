@@ -17,6 +17,7 @@ public enum GolemWeaponType {
 	AXE("item/battle_axe", (p, i,t) -> new MetalGolemWeaponItem(p, 0, i * 0.05, 0, 2,t), "III", "IS ", "TST"),
 	SWORD("item/sword", (p, i,t) -> new MetalGolemWeaponItem(p, i, 0, 1, 2,t), "TII", "ISI", "SIT"),;
 
+
 	private final MGFunction function;
 	private final String[] pattern;
 	private final String model;

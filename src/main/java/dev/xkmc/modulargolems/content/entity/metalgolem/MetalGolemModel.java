@@ -28,6 +28,11 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 	private final ModelPart leftForeArm;
 	private final ModelPart rightForeArm;
 	private final ModelPart shield;
+	public enum ArmState
+	{
+		ATTACK,TARGET,IDLE
+	}
+
 	public MetalGolemModel(EntityModelSet set) {
 		this(set.bakeLayer(MetalGolemBasicModels.METALGOLEM));
 	}
@@ -60,20 +65,41 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 	public void setupAnim(MetalGolemEntity pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch) {
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 		this.animateWalk(pNetHeadYaw, pHeadPitch, pLimbSwing, pLimbSwingAmount);
-		if(pEntity.getMainHandItem().getItem() instanceof MetalGolemWeaponItem mwi) {
-			switch (mwi.getGolemWeaponType()) {
-				case AXE, SWORD ->
-				{this.animate(pEntity.warningAnimationState, CustomModelAnimation.warningInAxe, pAgeInTicks);
-				this.animate(pEntity.attackAnimationState, CustomModelAnimation.attackInAxe, pAgeInTicks);}
-				case SPEAR -> {
-				this.animate(pEntity.attackAnimationState, CustomModelAnimation.attackInSpear, pAgeInTicks);
-				this.animate(pEntity.warningAnimationState, CustomModelAnimation.warningInSpear, pAgeInTicks);
+		int atkTick = pEntity.getAttackAnimationTick();
+		ArmState aState;
+		if(atkTick > 0){
+			aState = ArmState.ATTACK;
+		}else if(pEntity.isAggressive()){
+			aState = ArmState.TARGET;
+		}else{
+			aState = ArmState.IDLE;
+		}
+			if (pEntity.getMainHandItem().getItem() instanceof MetalGolemWeaponItem mwi) {
+				switch (mwi.getGolemWeaponType()) {
+					case AXE, SWORD -> {
+						if (aState == ArmState.TARGET) {
+							this.animate(pEntity.warningAnimationState, CustomModelAnimation.warningInAxe, pAgeInTicks);
+						} else if (aState == ArmState.ATTACK) {
+							this.animate(pEntity.attackAnimationState, CustomModelAnimation.attackInAxe, pAgeInTicks);
+						}
+					}
+
+					case SPEAR -> {
+						if (aState == ArmState.TARGET) {
+							this.animate(pEntity.warningAnimationState, CustomModelAnimation.warningInSpear, pAgeInTicks);
+						} else if (aState == ArmState.ATTACK) {
+							this.animate(pEntity.attackAnimationState, CustomModelAnimation.attackInSpear, pAgeInTicks);
+						}
+					}
+				}
+			}else{
+				if(aState == ArmState.IDLE || aState ==ArmState.TARGET){
+					this.animateIdle(pLimbSwing,pLimbSwingAmount);
+				}else{
+					this.animate(pEntity.attackAnimationState, CustomModelAnimation.attackUnarmed, pAgeInTicks);
 				}
 			}
-		}else {
-			this.animate(pEntity.attackAnimationState, CustomModelAnimation.attackUnarmed, pAgeInTicks);
 		}
-	}
 	private void animateWalk(float pNetHeadYaw, float pHeadPitch,float pLimbSwing,float pLimbSwingAmount) {
 		this.head.yRot = pNetHeadYaw * ((float) Math.PI / 180F);
 		this.head.xRot = pHeadPitch * ((float) Math.PI / 180F);
@@ -81,11 +107,13 @@ public class MetalGolemModel extends HierarchicalModel<MetalGolemEntity> impleme
 		this.leftLeg.xRot = 1.5F * Mth.triangleWave(pLimbSwing, 13.0F) * pLimbSwingAmount;
 		this.rightLeg.yRot = 0.0F;
 		this.leftLeg.yRot = 0.0F;
+		this.resetArmPoses();
+	}
+	private void animateIdle(float pLimbSwing,float pLimbSwingAmount) {
 		this.rightArm.xRot = (-0.2F + 1.5F * Mth.triangleWave(pLimbSwing, 13.0F)) * pLimbSwingAmount;
 		this.leftArm.xRot = (-0.2F - 1.5F * Mth.triangleWave(pLimbSwing, 13.0F)) * pLimbSwingAmount;
 		this.rightForeArm.xRot = 0;
 		this.leftForeArm.xRot = 0;
-		this.resetArmPoses();
 	}
 	private void resetArmPoses() {
 		this.leftArm.yRot = 0.0F;
