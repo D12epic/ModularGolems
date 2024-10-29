@@ -34,10 +34,12 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 	public final AnimationState attackAnimationState = new AnimationState();
 	public final AnimationState warningAnimationState = new AnimationState();
 	private final PoseStateMachine psm = new PoseStateMachine(this);
+
 	public MetalGolemEntity(EntityType<MetalGolemEntity> type, Level level) {
 		super(type, level);
 		this.setMaxUpStep(1);
 	}
+
 	protected boolean performDamageTarget(Entity target, float damage, double kb) {
 		if (target instanceof LivingEntity le) {
 			le.setLastHurtByPlayer(getOwner());
@@ -53,12 +55,15 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 		}
 		return succeed;
 	}
+
 	// ------ vanilla golem behavior
 	private int attackAnimationTick;
+
 	protected void registerGoals() {
 		this.goalSelector.addGoal(2, new GolemMeleeGoal(this));
 		super.registerGoals();
 	}
+
 	public void aiStep() {
 		super.aiStep();
 		if (this.attackAnimationTick > 0) {
@@ -75,6 +80,7 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 			}
 		}
 	}
+
 	public boolean doHurtTarget(Entity target) {
 		this.attackAnimationTick = 10;
 		this.level().broadcastEntityEvent(this, (byte) 4);
@@ -89,6 +95,7 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 		this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);
 		return flag;
 	}
+
 	public boolean hurt(DamageSource source, float amount) {
 		IronGolem.Crackiness crack = this.getCrackiness();
 		boolean flag = super.hurt(source, amount);
@@ -97,19 +104,23 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 		}
 		return flag;
 	}
+
 	public int getAttackAnimationTick() {
 		return this.attackAnimationTick;
 	}
+
 	public IronGolem.Crackiness getCrackiness() {
 		return IronGolem.Crackiness.byFraction(this.getHealth() / this.getMaxHealth());
 	}
+
 	public void handleEntityEvent(byte pId) {
-		if(pId == 4) {
+		if (pId == 4) {
 			this.attackAnimationTick = 10;
 			psm.signalAttacking();
 			super.handleEntityEvent(pId);
 		}
 	}
+
 	protected SoundEvent getHurtSound(DamageSource p_28872_) {
 		return SoundEvents.IRON_GOLEM_HURT;
 	}
@@ -121,10 +132,12 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 	protected void playStepSound(BlockPos p_28864_, BlockState p_28865_) {
 		this.playSound(SoundEvents.IRON_GOLEM_STEP, 1.0F, 1.0F);
 	}
+
 	public void tick() {
-	super.tick();
-	psm.tick();
+		super.tick();
+		psm.tick();
 	}
+
 	public boolean checkSpawnObstruction(LevelReader p_28853_) {
 		BlockPos blockpos = this.blockPosition();
 		BlockPos blockpos1 = blockpos.below();
@@ -175,14 +188,17 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 			}
 		}
 	}
-	public int damageShieldImpl(LivingEntity player, ItemStack stack, double v) {
-       return 0;
-	}
+
 	@Override
 	public boolean isBlocking() {
-    if((this.getOffhandItem().getItem()) instanceof MetalGolemShieldItem){
-		return true;
-	}
-        return false;
+		if (this.getOffhandItem().getItem() instanceof MetalGolemShieldItem mgsi) {
+			double d = mgsi.getDefence();
+			if (d >= 0) {
+				return true;
+			} else if (this.isAggressive()) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

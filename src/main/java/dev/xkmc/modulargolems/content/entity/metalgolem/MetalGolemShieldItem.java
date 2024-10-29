@@ -18,10 +18,17 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class MetalGolemShieldItem extends GolemEquipmentItem {
-    public MetalGolemShieldItem(Properties properties, EquipmentSlot slot, Supplier<EntityType<?>> type, Consumer<ImmutableMultimap.Builder<Attribute, AttributeModifier>> attr) {
+    protected final Double defence;
+    public MetalGolemShieldItem(Properties properties, EquipmentSlot slot, Supplier<EntityType<?>> type,
+     Consumer<ImmutableMultimap.Builder<Attribute, AttributeModifier>> attr,Double defence) {
         super(properties, slot, type, attr);
+        this.defence = defence;
     }
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
         BannerItem.appendHoverTextFromBannerBlockEntityTag(pStack, pTooltip);
+    }
+
+    public Double getDefence() {
+        return defence;
     }
 }
