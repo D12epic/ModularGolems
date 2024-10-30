@@ -18,9 +18,9 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class MetalGolemShieldItem extends GolemEquipmentItem {
-    protected final Double defence;
+    protected final double defence;
     public MetalGolemShieldItem(Properties properties, EquipmentSlot slot, Supplier<EntityType<?>> type,
-     Consumer<ImmutableMultimap.Builder<Attribute, AttributeModifier>> attr,Double defence) {
+     Consumer<ImmutableMultimap.Builder<Attribute, AttributeModifier>> attr,double defence) {
         super(properties, slot, type, attr);
         this.defence = defence;
     }
