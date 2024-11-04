@@ -143,15 +143,15 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 
 	public boolean checkSpawnObstruction(LevelReader p_28853_) {
 		BlockPos blockpos = this.blockPosition();
-		BlockPos blockpos1 = blockpos.below();
-		BlockState blockstate = p_28853_.getBlockState(blockpos1);
-		if (!blockstate.entityCanStandOn(p_28853_, blockpos1, this)) {
+		BlockPos blockPos1 = blockpos.below();
+		BlockState blockstate = p_28853_.getBlockState(blockPos1);
+		if (!blockstate.entityCanStandOn(p_28853_, blockPos1, this)) {
 			return false;
 		} else {
 			for (int i = 1; i < 3; ++i) {
-				BlockPos blockpos2 = blockpos.above(i);
-				BlockState blockstate1 = p_28853_.getBlockState(blockpos2);
-				if (!NaturalSpawner.isValidEmptySpawnBlock(p_28853_, blockpos2, blockstate1, blockstate1.getFluidState(), EntityType.IRON_GOLEM)) {
+				BlockPos blockPos2 = blockpos.above(i);
+				BlockState blockState1 = p_28853_.getBlockState(blockPos2);
+				if (!NaturalSpawner.isValidEmptySpawnBlock(p_28853_, blockPos2, blockState1, blockState1.getFluidState(), EntityType.IRON_GOLEM)) {
 					return false;
 				}
 			}
@@ -191,6 +191,7 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 			}
 		}
 	}
+
 	@Override
 	protected void hurtCurrentlyUsedShield(float damage) {
 		Item s = this.getOffhandItem().getItem();

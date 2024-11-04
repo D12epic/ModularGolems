@@ -12,6 +12,7 @@ import dev.xkmc.modulargolems.content.entity.dog.DogGolemEntity;
 import dev.xkmc.modulargolems.content.entity.dog.DogGolemPartType;
 import dev.xkmc.modulargolems.content.entity.humanoid.HumaniodGolemPartType;
 import dev.xkmc.modulargolems.content.entity.humanoid.HumanoidGolemEntity;
+import dev.xkmc.modulargolems.content.entity.metalgolem.MGLightShieldItem;
 import dev.xkmc.modulargolems.content.entity.metalgolem.MetalGolemEntity;
 import dev.xkmc.modulargolems.content.entity.metalgolem.MetalGolemPartType;
 import dev.xkmc.modulargolems.content.item.card.*;
@@ -163,7 +164,10 @@ public class GolemItems {
 		{
 			METALGOLEM_WEAPON = GolemWeaponType.build(VanillaGolemWeaponMaterial.values());
 		}
+		//metalGolem shield
+		{
 
+		}
 		// card
 		{
 			CARD = new ItemEntry[16];
