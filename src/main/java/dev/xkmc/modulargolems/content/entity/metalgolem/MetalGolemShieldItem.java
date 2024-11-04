@@ -28,7 +28,7 @@ public class MetalGolemShieldItem extends GolemEquipmentItem {
         BannerItem.appendHoverTextFromBannerBlockEntityTag(pStack, pTooltip);
     }
 
-    public Double getDefence() {
+    public Double getShieldValue() {
         return defence;
     }
 }

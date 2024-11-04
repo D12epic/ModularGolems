@@ -450,7 +450,6 @@ public class HumanoidGolemEntity extends SweepGolemEntity<HumanoidGolemEntity, H
 		reassessWeaponGoal();
 		inventoryTick = 10;
 	}
-
 	@Override
 	public void checkRide(LivingEntity target) {
 		if (target instanceof DogGolemEntity || target instanceof AbstractHorse) {

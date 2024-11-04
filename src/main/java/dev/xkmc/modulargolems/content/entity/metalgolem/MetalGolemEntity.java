@@ -20,6 +20,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -34,7 +35,9 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 	public final AnimationState attackAnimationState = new AnimationState();
 	public final AnimationState warningAnimationState = new AnimationState();
 	private final PoseStateMachine psm = new PoseStateMachine(this);
-
+	@SerialClass.SerialField
+	public double defence = 1;
+	public double defenceBounce = 1;
 	public MetalGolemEntity(EntityType<MetalGolemEntity> type, Level level) {
 		super(type, level);
 		this.setMaxUpStep(1);
@@ -188,15 +191,24 @@ public class MetalGolemEntity extends SweepGolemEntity<MetalGolemEntity, MetalGo
 			}
 		}
 	}
-
+	@Override
+	protected void hurtCurrentlyUsedShield(float damage) {
+		Item s = this.getOffhandItem().getItem();
+		if(!(s instanceof MetalGolemShieldItem)) return;
+		defence -= damage/((MetalGolemShieldItem) s).getShieldValue();
+		if (defence < 0) defence=0;
+		if(defence == 0){
+			defence +=1*defenceBounce;
+		}
+	}
 	@Override
 	public boolean isBlocking() {
 		if (this.getOffhandItem().getItem() instanceof MetalGolemShieldItem mgsi) {
-			double d = mgsi.getDefence();
-			if (d >= 0) {
-				return true;
-			} else if (this.isAggressive()) {
-				return true;
+			if (this.isAggressive()) {
+				double d = defence;
+				if (d > 0) {
+					return true;
+				}
 			}
 		}
 		return false;
